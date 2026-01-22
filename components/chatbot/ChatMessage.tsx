@@ -132,18 +132,17 @@ export function ChatMessage({ message }: ChatMessageProps) {
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      {policy.file_path && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDownloadDocument(policy.id)}
-                          className="h-6 px-2 text-xs"
-                          title="Download original file"
-                        >
-                          <Download className="w-3 h-3 mr-1" />
-                          Download
-                        </Button>
-                      )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDownloadDocument(policy.id)}
+                        className="h-6 px-2 text-xs"
+                        title={policy.file_path || policy.filePath ? "Download original file" : "No file uploaded"}
+                        disabled={!policy.file_path && !policy.filePath}
+                      >
+                        <Download className="w-3 h-3 mr-1" />
+                        Download
+                      </Button>
                       <Badge variant="outline" className="text-xs">
                         {policy.category}
                       </Badge>

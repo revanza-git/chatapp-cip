@@ -4,11 +4,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+        NODE_ENV: production
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://backend:8080}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8080}
     depends_on:
       - backend
     networks:
@@ -23,7 +26,7 @@ services:
       - "8080:8080"
     environment:
       - DATABASE_URL=postgresql://chatbot_user:chatbot_password@postgres:5432/chatbot_db
-      - OLLAMA_URL=${OLLAMA_URL:-https://90b90cad6d42.ngrok-free.app}
+      - OLLAMA_URL=${OLLAMA_URL:-http://ollama:11434}
       - PORT=8080
       - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production}
       - AI_ENABLED=${AI_ENABLED:-true}

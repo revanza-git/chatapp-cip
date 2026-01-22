@@ -2,6 +2,12 @@
 
 An intelligent chatbot system for IT security policy management, document handling, and user onboarding. Built with modern technologies and designed for easy deployment.
 
+## 🖼️ Preview
+
+| Login & Onboarding | Chat Workspace | Admin & Audit Views |
+| --- | --- | --- |
+| ![Login and onboarding](./public/preview/1-2.png) | ![Chat workspace](./public/preview/1-3.png) | ![Admin and audit views](./public/preview/1-4.png) |
+
 ## 🏗️ Technology Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS v4
@@ -10,6 +16,61 @@ An intelligent chatbot system for IT security policy management, document handli
 - **AI Integration**: Ollama (Llama 3.1) with Hugging Face fallback
 - **Storage**: Local uploads directory (configurable)
 - **Deployment**: Docker-ready, optimized for Railway platform
+
+## 📊 Product Overview Charts
+
+### Feature Coverage Matrix
+
+```mermaid
+flowchart LR
+    subgraph Channels
+        UI[Web UI]
+        API[REST API]
+    end
+
+    subgraph Core Modules
+        Auth[Authentication]
+        Docs[Document Management]
+        Chat[AI Chat]
+        Admin[Admin & Audit]
+        Uploads[Uploads]
+    end
+
+    UI --> Auth
+    UI --> Docs
+    UI --> Chat
+    UI --> Admin
+    UI --> Uploads
+
+    API --> Auth
+    API --> Docs
+    API --> Chat
+    API --> Admin
+    API --> Uploads
+```
+
+### End-to-End Request Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant FE as Next.js Frontend
+    participant BE as NestJS API
+    participant DB as PostgreSQL
+    participant AI as Ollama/HF
+
+    User->>FE: Login, upload docs, ask questions
+    FE->>BE: Authenticated API request
+    BE->>DB: Validate user + load policies
+    alt AI enabled
+        BE->>AI: Send prompt + context
+        AI-->>BE: AI answer
+    else AI disabled
+        BE-->>BE: Use fallback response
+    end
+    BE-->>FE: Response payload
+    FE-->>User: Render chat response
+```
 
 ## 🚀 Features
 

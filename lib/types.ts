@@ -17,9 +17,13 @@ export interface PolicyFile {
   document_type: 'policy' | 'onboarding';
   tags: string[];
   file_path?: string;
+  filePath?: string;
   created_by: string;
+  createdBy?: string;
   last_updated: string;
+  lastUpdated?: string;
   is_active: boolean;
+  isActive?: boolean;
 }
 
 export interface ChatRequest {
@@ -112,4 +116,4 @@ export interface SupportedFileTypesResponse {
   max_file_size: string;
   accepted_extensions: string[];
   accepted_mime_types?: string[];
-} 
+}
