@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  user
+  admin
+  hr
+  it_security
+}
+
+enum DocumentType {
+  policy
+  onboarding
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  VIEW
+  LOGIN
+  LOGOUT
+}
+
+enum ResourceType {
+  USER
+  DOCUMENT
+  SYSTEM
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique @db.VarChar(50)
+  email      String    @unique @db.VarChar(100)
+  password   String    @db.VarChar(255)
+  firstName  String    @map("first_name") @db.VarChar(50)
+  lastName   String    @map("last_name") @db.VarChar(50)
+  role       UserRole  @default(user)
+  isActive   Boolean   @default(true) @map("is_active")
+  lastLogin  DateTime? @map("last_login")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  auditLogs  AuditLog[]
+  documents  PolicyFile[] @relation("UserDocuments")
+
+  @@map("users")
+}
+
+model PolicyFile {
+  id              Int          @id @default(autoincrement())
+  name            String       @db.VarChar(255)
+  content         String       @db.Text
+  description     String?      @db.Text
+  category        String       @db.VarChar(100)
+  documentType    DocumentType @map("document_type")
+  tags            Json?        @db.Json
+  filePath        String?      @map("file_path") @db.VarChar(500)
+  createdBy       String?      @map("created_by") @db.VarChar(100)
+  createdByUserId Int?         @map("created_by_user_id")
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+  isActive        Boolean      @default(true) @map("is_active")
+
+  createdByUser User? @relation("UserDocuments", fields: [createdByUserId], references: [id])
+
+  @@map("policy_files")
+}
+
+model AuditLog {
+  id           Int          @id @default(autoincrement())
+  userId       Int          @map("user_id")
+  action       AuditAction
+  resourceType ResourceType @map("resource_type")
+  resourceId   Int?         @map("resource_id")
+  resourceName String?      @map("resource_name") @db.VarChar(255)
+  details      String?      @db.Text
+  ipAddress    String?      @map("ip_address") @db.VarChar(45)
+  userAgent    String?      @map("user_agent") @db.Text
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}

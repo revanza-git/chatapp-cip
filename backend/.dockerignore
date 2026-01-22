@@ -1,0 +1,34 @@
+# Binaries
+main
+*.exe
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+
+# Development uploads (use volume for persistence)
+uploads/
+
+# Documentation
+*.md
+!README.md
+
+# Environment files
+.env*
